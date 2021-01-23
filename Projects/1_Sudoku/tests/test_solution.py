@@ -5,6 +5,7 @@ own additional test cases to cover any failed tests shown in the Project Assista
 """
 import unittest
 import solution
+import utils
 
 
 class TestNakedTwins(unittest.TestCase):
@@ -73,11 +74,40 @@ class TestNakedTwins(unittest.TestCase):
     ]
 
     def test_naked_twins(self):
-        self.assertTrue(solution.naked_twins(self.before_naked_twins_1) in self.possible_solutions_1,
+        mySol = solution.naked_twins(self.before_naked_twins_1)
+        
+        """
+        print('\n\n')
+        print('Original Puzzle\n------------------------------------\n')
+        utils.display(self.before_naked_twins_1)
+        print('\n\n')
+        
+        
+        print('My Solution\n------------------------------------\n')
+        utils.display(mySol)
+        print('\n\n')
+        for sol in self.possible_solutions_1:
+            print('Possible Solution\n------------------------------------\n')
+            utils.display(sol)
+            print('\n\n')
+        """
+
+        self.assertTrue(mySol in self.possible_solutions_1,
                         "Your naked_twins function produced an unexpected board.")
 
     def test_naked_twins2(self):
-        self.assertTrue(solution.naked_twins(self.before_naked_twins_2) in self.possible_solutions_2,
+        mySol = solution.naked_twins(self.before_naked_twins_2)
+        
+        """
+        print('\n\n')
+        utils.display(mySol)
+        print('\n\n')
+        for sol in self.possible_solutions_2:
+            utils.display(sol)
+            print('\n\n')
+        """
+        
+        self.assertTrue(mySol in self.possible_solutions_2,
                         "Your naked_twins function produced an unexpected board.")
 
 
@@ -98,6 +128,32 @@ class TestDiagonalSudoku(unittest.TestCase):
 
     def test_solve(self):
         self.assertEqual(solution.solve(self.diagonal_grid), self.solved_diag_sudoku)
+
+
+"""
+class TestIntersection(unittest.TestCase):
+    lstA = solution.row_units[0]
+    lstB = solution.column_units[0]
+
+    common_units = ['A1']
+
+    boxA = 'A1'
+    boxB = 'B3'
+    boxC = 'E6'
+
+    abPeers = [peer for peer in solution.square_units[0] if peer not in ['A1', 'B3']]
+    acPeers = ['B6', 'E3']
+
+    def test_intersection(self):
+        self.assertEqual(solution.intersection(self.lstA, self.lstB), self.common_units)
+
+    def test_intersection2(self):
+        self.assertTrue(solution.intersection(solution.peers[self.boxA], solution.peers[self.boxB]) in self.abPeers)
+    
+    def test_intersection3(self):
+        self.assertTrue(solution.intersection(solution.peers[self.boxB], solution.peers[self.boxC]) in self.acPeers)
+"""
+
 
 if __name__ == '__main__':
     unittest.main()
