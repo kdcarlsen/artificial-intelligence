@@ -23,11 +23,7 @@ class ActionLayer(BaseActionLayer):
         childrenA = self.children[actionA]
         childrenB = self.children[actionB]
 
-        # Check if either set is the empty set and return false if so since no negation is the empty set
-        if childrenA == set() or childrenB == set():
-            return False
-        else:
-            return all(((x == ~y) for x in childrenA for y in childrenB))
+        return any(((x == ~y) for x in childrenA for y in childrenB))
  
     def _interference(self, actionA, actionB):
         """ Return True if the effects of either action negate the preconditions of the other 
@@ -232,7 +228,26 @@ class PlanningGraph:
         -----
         WARNING: you should expect long runtimes using this heuristic on complex problems
         """
-        return 0
+        self.fill()
+        layerId = 0
+        for layer in self.literal_layers:
+            allGoalsMet = True
+            for goal in self.goal:
+                if goal not in layer:
+                    allGoalsMet = False
+            
+            goalsAreMutex = False
+            for goalA in self.goal:
+                for goalB in self.goal:
+                    if layer.is_mutex(goalA, goalB):
+                        goalsAreMutex = True
+            
+            if allGoalsMet and not goalsAreMutex:
+                return layerId
+            else:
+                layerId = layerId + 1
+
+            
     
     def helper_levelCost(self, goal):
         layerId = 0
